@@ -52,24 +52,24 @@
             android:orientation="vertical">
 
             <EditText
-                android:id="@+id/editText"
+                android:id="@+id/txtUsuario"
                 android:layout_width="291dp"
                 android:layout_height="wrap_content"
+                android:backgroundTint="@color/colorAccent"
                 android:ems="10"
                 android:inputType="textPersonName"
                 android:text="Usuario:"
-                android:textColor="#ffff"
-                android:backgroundTint="@color/colorAccent"/>
+                android:textColor="#ffff" />
 
             <EditText
-                android:id="@+id/editText3"
+                android:id="@+id/txtContra"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:backgroundTint="@color/colorAccent"
                 android:ems="10"
                 android:inputType="textPersonName"
                 android:text="Contraseña:"
-                android:backgroundTint="@color/colorAccent"
-                android:textColor="#ffff"/>
+                android:textColor="#ffff" />
         </LinearLayout>
     </LinearLayout>
 
@@ -89,7 +89,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="184dp"
         android:background="@drawable/redondo"
-        app:srcCompat="@drawable/icon" />
+        app:srcCompat="@drawable/icon"
+        android:onClick="logearLocal"/>
 
     <TextView
         android:id="@+id/textView2"

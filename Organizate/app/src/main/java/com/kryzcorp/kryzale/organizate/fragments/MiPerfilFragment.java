@@ -140,7 +140,7 @@ public class MiPerfilFragment extends Fragment {
                     return;
                 }
                 try {
-                    String email = object.getString("email");
+                    String email = object.getString("first_name");
                     setEmail(email);
                 } catch (JSONException e) {
                     Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
