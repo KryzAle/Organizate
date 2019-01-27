@@ -1,6 +1,8 @@
 package com.kryzcorp.kryzale.organizate.fragments;
 
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,15 +21,20 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
+import android.text.InputType;
+import android.text.format.DateFormat;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CalendarView;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -41,6 +48,7 @@ import com.android.volley.toolbox.StringRequest;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -86,6 +94,9 @@ public class RegistrarEventoFragment extends Fragment {
     Button botonRegistro;
     ImageView imgFoto;
     ProgressDialog progreso;
+    Calendar c;
+    DatePickerDialog dpd;
+    TimePickerDialog tpd;
 
     RelativeLayout layoutRegistrar;//permisos
 
@@ -141,6 +152,93 @@ public class RegistrarEventoFragment extends Fragment {
 
 
         layoutRegistrar= (RelativeLayout) vista.findViewById(R.id.idLayoutRegistrar);
+        campoFec.setInputType(InputType.TYPE_NULL);
+        campoIni.setInputType(InputType.TYPE_NULL);
+        campoFi.setInputType(InputType.TYPE_NULL);
+
+        campoFec.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                c= Calendar.getInstance();
+                int day= c.get(Calendar.DAY_OF_MONTH);
+                final int month= c.get(Calendar.MONTH);
+                int year= c.get(Calendar.YEAR);
+                dpd = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                        campoFec.setText(i+"/"+(i1+1)+"/"+i2);
+
+                    }
+                },day,month,year);
+
+                dpd.show();
+            }
+        });
+        campoIni.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                c= Calendar.getInstance();
+                int hora= c.get(Calendar.HOUR_OF_DAY);
+                int minuto= c.get(Calendar.MINUTE);
+                tpd = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int i, int i1) {
+                        campoIni.setText(i+":"+i1);
+                    }
+                },hora,minuto,DateFormat.is24HourFormat(getActivity()));
+                tpd.show();
+            }
+        });
+        campoFi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                c= Calendar.getInstance();
+                int hora= c.get(Calendar.HOUR_OF_DAY);
+                int minuto= c.get(Calendar.MINUTE);
+                tpd = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int i, int i1) {
+                        campoFi.setText(i+":"+i1);
+                    }
+                },hora,minuto,DateFormat.is24HourFormat(getActivity()));
+                tpd.show();
+            }
+        });
+
+
+        campoNotific.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                c= Calendar.getInstance();
+                int hora= c.get(Calendar.HOUR_OF_DAY);
+                int minuto= c.get(Calendar.MINUTE);
+                tpd = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int i, int i1) {
+
+
+                        campoNotific.setText( campoNotific.getText()+" "+i+":"+i1+":00");
+                    }
+                },hora,minuto,DateFormat.is24HourFormat(getActivity()));
+                tpd.show();
+
+                c= Calendar.getInstance();
+                int day= c.get(Calendar.DAY_OF_MONTH);
+                final int month= c.get(Calendar.MONTH);
+                int year= c.get(Calendar.YEAR);
+                dpd = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                        campoNotific.setText(i+"/"+(i1+1)+"/"+i2);
+
+                    }
+                },day,month,year);
+
+                dpd.show();
+
+            }
+        });
 
 
         botonRegistro.setOnClickListener(new View.OnClickListener() {
