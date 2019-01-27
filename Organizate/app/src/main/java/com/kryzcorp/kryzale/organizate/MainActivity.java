@@ -13,13 +13,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.kryzcorp.kryzale.organizate.fragments.BienvenidaFragment;
-import com.kryzcorp.kryzale.organizate.fragments.ConsultaListaUsuarioImagenUrlFragment;
-import com.kryzcorp.kryzale.organizate.fragments.ConsultaUsuarioUrlFragment;
-import com.kryzcorp.kryzale.organizate.fragments.ConsultarListaUsuariosFragment;
-import com.kryzcorp.kryzale.organizate.fragments.ConsultarUsuarioFragment;
+import com.kryzcorp.kryzale.organizate.fragments.ConsultarListaEventosFragment;
 import com.kryzcorp.kryzale.organizate.fragments.ConsutarListausuarioImagenFragment;
 import com.kryzcorp.kryzale.organizate.fragments.MiPerfilFragment;
-import com.kryzcorp.kryzale.organizate.fragments.RegistrarUsuarioFragment;
+import com.kryzcorp.kryzale.organizate.fragments.RegistrarEventoFragment;
 import com.kryzcorp.kryzale.organizate.interfaces.IFragments;
 
 public class MainActivity extends AppCompatActivity
@@ -91,22 +88,13 @@ public class MainActivity extends AppCompatActivity
             miFragment=new BienvenidaFragment();
             fragmentSeleccionado=true;
         }else if (id == R.id.nav_registro) {
-            miFragment=new RegistrarUsuarioFragment();
-            fragmentSeleccionado=true;
-        } else if (id == R.id.nav_consulta_individual) {
-            miFragment=new ConsultarUsuarioFragment();
-            fragmentSeleccionado=true;
-        } else if (id == R.id.nav_consulta_Url) {
-            miFragment=new ConsultaUsuarioUrlFragment();
+            miFragment=new RegistrarEventoFragment();
             fragmentSeleccionado=true;
         } else if (id == R.id.nav_consulta_gral) {
-            miFragment=new ConsultarListaUsuariosFragment();
+            miFragment=new ConsultarListaEventosFragment();
             fragmentSeleccionado=true;
         } else if (id == R.id.nav_consulta_gral_img) {
             miFragment=new ConsutarListausuarioImagenFragment();
-            fragmentSeleccionado=true;
-        }else if (id == R.id.nav_consulta_gral_img_url) {
-            miFragment=new ConsultaListaUsuarioImagenUrlFragment();
             fragmentSeleccionado=true;
         } else if (id == R.id.nav_mi_perfil) {
             miFragment=new MiPerfilFragment();

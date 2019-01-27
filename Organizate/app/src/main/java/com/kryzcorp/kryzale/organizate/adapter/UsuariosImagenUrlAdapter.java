@@ -17,18 +17,18 @@ import com.android.volley.toolbox.ImageRequest;
 import java.util.List;
 
 import com.kryzcorp.kryzale.organizate.R;
-import com.kryzcorp.kryzale.organizate.entidades.Usuario;
+import com.kryzcorp.kryzale.organizate.entidades.Evento;
 import com.kryzcorp.kryzale.organizate.entidades.VolleySingleton;
 
 public class UsuariosImagenUrlAdapter extends RecyclerView.Adapter<UsuariosImagenUrlAdapter.UsuariosHolder>{
 
-    List<Usuario> listaUsuarios;
+    List<Evento> listaEventos;
   //  RequestQueue request;
     Context context;
 
 
-    public UsuariosImagenUrlAdapter(List<Usuario> listaUsuarios, Context context) {
-        this.listaUsuarios = listaUsuarios;
+    public UsuariosImagenUrlAdapter(List<Evento> listaEventos, Context context) {
+        this.listaEventos = listaEventos;
         this.context=context;
       //  request= Volley.newRequestQueue(context);
     }
@@ -44,16 +44,12 @@ public class UsuariosImagenUrlAdapter extends RecyclerView.Adapter<UsuariosImage
 
     @Override
     public void onBindViewHolder(UsuariosHolder holder, int position) {
-        holder.txtDocumento.setText(listaUsuarios.get(position).getDocumento().toString());
-        holder.txtNombre.setText(listaUsuarios.get(position).getNombre().toString());
-        holder.txtProfesion.setText(listaUsuarios.get(position).getProfesion().toString());
+        holder.txtDocumento.setText(listaEventos.get(position).getNotificar().toString());
+        holder.txtNombre.setText(listaEventos.get(position).getTitulo().toString());
+        holder.txtProfesion.setText(listaEventos.get(position).getNota().toString());
 
-        if (listaUsuarios.get(position).getRutaImagen()!=null){
-           //
-            cargarImagenWebService(listaUsuarios.get(position).getRutaImagen(),holder);
-        }else{
-            holder.imagen.setImageResource(R.drawable.img_base);
-        }
+        holder.imagen.setImageResource(R.drawable.img_base);
+
     }
 
     private void cargarImagenWebService(String rutaImagen, final UsuariosHolder holder) {
@@ -80,7 +76,7 @@ public class UsuariosImagenUrlAdapter extends RecyclerView.Adapter<UsuariosImage
 
     @Override
     public int getItemCount() {
-        return listaUsuarios.size();
+        return listaEventos.size();
     }
 
     public class UsuariosHolder extends RecyclerView.ViewHolder{

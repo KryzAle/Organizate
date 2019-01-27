@@ -53,12 +53,12 @@ import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link RegistrarUsuarioFragment.OnFragmentInteractionListener} interface
+ * {@link RegistrarEventoFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link RegistrarUsuarioFragment#newInstance} factory method to
+ * Use the {@link RegistrarEventoFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class RegistrarUsuarioFragment extends Fragment {
+public class RegistrarEventoFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -82,8 +82,8 @@ public class RegistrarUsuarioFragment extends Fragment {
     private static final int COD_SELECCIONA = 10;
     private static final int COD_FOTO = 20;
 
-    EditText campoNombre,campoDocumento,campoProfesion;
-    Button botonRegistro,btnFoto;
+    EditText campoUbic,campoTitul,campoFec,campoIni,campoFi,campoNot,campoNotific;
+    Button botonRegistro;
     ImageView imgFoto;
     ProgressDialog progreso;
 
@@ -94,7 +94,7 @@ public class RegistrarUsuarioFragment extends Fragment {
 
     StringRequest stringRequest;
 
-    public RegistrarUsuarioFragment() {
+    public RegistrarEventoFragment() {
         // Required empty public constructor
     }
 
@@ -104,11 +104,11 @@ public class RegistrarUsuarioFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment RegistrarUsuarioFragment.
+     * @return A new instance of fragment RegistrarEventoFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static RegistrarUsuarioFragment newInstance(String param1, String param2) {
-        RegistrarUsuarioFragment fragment = new RegistrarUsuarioFragment();
+    public static RegistrarEventoFragment newInstance(String param1, String param2) {
+        RegistrarEventoFragment fragment = new RegistrarEventoFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -129,26 +129,18 @@ public class RegistrarUsuarioFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View vista=inflater.inflate(R.layout.fragment_registrar_usuario, container, false);
-        campoDocumento= (EditText) vista.findViewById(R.id.campoDoc);
-        campoNombre= (EditText) vista.findViewById(R.id.campoNombre);
-        campoProfesion= (EditText) vista.findViewById(R.id.campoProfesion);
+        View vista=inflater.inflate(R.layout.fragment_registrar_evento, container, false);
+        campoUbic= (EditText) vista.findViewById(R.id.campoUbicacion);
+        campoTitul= (EditText) vista.findViewById(R.id.campoTitulo);
+        campoFec= (EditText) vista.findViewById(R.id.campoFecha);
+        campoIni= (EditText) vista.findViewById(R.id.campoInicio);
+        campoFi= (EditText) vista.findViewById(R.id.campoFin);
+        campoNot= (EditText) vista.findViewById(R.id.campoNota);
+        campoNotific= (EditText) vista.findViewById(R.id.campoNotificar);
         botonRegistro= (Button) vista.findViewById(R.id.btnRegistrar);
-        btnFoto=(Button)vista.findViewById(R.id.btnFoto);
-
-        imgFoto=(ImageView)vista.findViewById(R.id.imgFoto);
 
 
         layoutRegistrar= (RelativeLayout) vista.findViewById(R.id.idLayoutRegistrar);
-
-       // request= Volley.newRequestQueue(getContext());
-
-        //Permisos
-        if(solicitaPermisosVersionesSuperiores()){
-            btnFoto.setEnabled(true);
-        }else{
-          btnFoto.setEnabled(false);
-        }
 
 
         botonRegistro.setOnClickListener(new View.OnClickListener() {
@@ -158,77 +150,16 @@ public class RegistrarUsuarioFragment extends Fragment {
             }
         });
 
-        btnFoto.setOnClickListener(new View.OnClickListener() {
+        /*btnFoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mostrarDialogOpciones();
             }
-        });
+        });*/
 
         return vista;
     }
 
-    private void mostrarDialogOpciones() {
-        final CharSequence[] opciones={"Tomar Foto","Elegir de Galeria","Cancelar"};
-        final AlertDialog.Builder builder=new AlertDialog.Builder(getContext());
-        builder.setTitle("Elige una Opción");
-        builder.setItems(opciones, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                if (opciones[i].equals("Tomar Foto")){
-                    abriCamara();
-                }else{
-                    if (opciones[i].equals("Elegir de Galeria")){
-                        Intent intent=new Intent(Intent.ACTION_PICK,
-                                MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                        intent.setType("image/");
-                        startActivityForResult(intent.createChooser(intent,"Seleccione"),COD_SELECCIONA);
-                    }else{
-                        dialogInterface.dismiss();
-                    }
-                }
-            }
-        });
-        builder.show();
-    }
-
-    private void abriCamara() {
-        File miFile=new File(Environment.getExternalStorageDirectory(),DIRECTORIO_IMAGEN);
-        boolean isCreada=miFile.exists();
-
-        if(isCreada==false){
-            isCreada=miFile.mkdirs();
-        }
-
-        if(isCreada==true){
-            Long consecutivo= System.currentTimeMillis()/1000;
-            String nombre=consecutivo.toString()+".jpg";
-
-            path=Environment.getExternalStorageDirectory()+File.separator+DIRECTORIO_IMAGEN
-                        +File.separator+nombre;//indicamos la ruta de almacenamiento
-
-            fileImagen=new File(path);
-
-            Intent intent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            intent.putExtra(MediaStore.EXTRA_OUTPUT,Uri.fromFile(fileImagen));
-
-            ////
-            if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.N)
-            {
-                String authorities=getContext().getPackageName()+".provider";
-                Uri imageUri= FileProvider.getUriForFile(getContext(),authorities,fileImagen);
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-            }else
-            {
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(fileImagen));
-            }
-            startActivityForResult(intent,COD_FOTO);
-
-            ////
-
-        }
-
-    }
 
 
     @Override
@@ -287,85 +218,9 @@ public class RegistrarUsuarioFragment extends Fragment {
     }
 
 
-    //permisos
-    ////////////////
 
-    private boolean solicitaPermisosVersionesSuperiores() {
-        if (Build.VERSION.SDK_INT<Build.VERSION_CODES.M){//validamos si estamos en android menor a 6 para no buscar los permisos
-            return true;
-        }
-
-        //validamos si los permisos ya fueron aceptados
-        if((getContext().checkSelfPermission(WRITE_EXTERNAL_STORAGE)== PackageManager.PERMISSION_GRANTED)&&getContext().checkSelfPermission(CAMERA)==PackageManager.PERMISSION_GRANTED){
-            return true;
-        }
-
-
-        if ((shouldShowRequestPermissionRationale(WRITE_EXTERNAL_STORAGE)||(shouldShowRequestPermissionRationale(CAMERA)))){
-            cargarDialogoRecomendacion();
-        }else{
-            requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE, CAMERA}, MIS_PERMISOS);
-        }
-
-        return false;//implementamos el que procesa el evento dependiendo de lo que se defina aqui
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode==MIS_PERMISOS){
-            if(grantResults.length==2 && grantResults[0]==PackageManager.PERMISSION_GRANTED && grantResults[1]==PackageManager.PERMISSION_GRANTED){//el dos representa los 2 permisos
-                Toast.makeText(getContext(),"Permisos aceptados",Toast.LENGTH_SHORT);
-                btnFoto.setEnabled(true);
-            }
-        }else{
-            solicitarPermisosManual();
-        }
-    }
-
-
-    private void solicitarPermisosManual() {
-        final CharSequence[] opciones={"si","no"};
-        final AlertDialog.Builder alertOpciones=new AlertDialog.Builder(getContext());//estamos en fragment
-        alertOpciones.setTitle("¿Desea configurar los permisos de forma manual?");
-        alertOpciones.setItems(opciones, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                if (opciones[i].equals("si")){
-                    Intent intent=new Intent();
-                    intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                    Uri uri=Uri.fromParts("package",getContext().getPackageName(),null);
-                    intent.setData(uri);
-                    startActivity(intent);
-                }else{
-                    Toast.makeText(getContext(),"Los permisos no fueron aceptados",Toast.LENGTH_SHORT).show();
-                    dialogInterface.dismiss();
-                }
-            }
-        });
-        alertOpciones.show();
-    }
-
-
-    private void cargarDialogoRecomendacion() {
-        AlertDialog.Builder dialogo=new AlertDialog.Builder(getContext());
-        dialogo.setTitle("Permisos Desactivados");
-        dialogo.setMessage("Debe aceptar los permisos para el correcto funcionamiento de la App");
-
-        dialogo.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE,CAMERA},100);
-            }
-        });
-        dialogo.show();
-    }
 
     ///////////////
-
-
-
-
     private void cargarWebService() {
 
         progreso=new ProgressDialog(getContext());
@@ -374,7 +229,7 @@ public class RegistrarUsuarioFragment extends Fragment {
 
         String ip=getString(R.string.ip);
 
-        String url=ip+"/wsJSONRegistroMovil.php?";
+        String url=ip+"/wsJSONRegistroEvento.php?";
 
         stringRequest=new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
 
@@ -383,9 +238,13 @@ public class RegistrarUsuarioFragment extends Fragment {
                 progreso.hide();
 
                 if (response.trim().equalsIgnoreCase("registra")){
-                    campoNombre.setText("");
-                    campoDocumento.setText("");
-                    campoProfesion.setText("");
+                    campoUbic.setText("");
+                    campoFec.setText("");
+                    campoFi.setText("");
+                    campoIni.setText("");
+                    campoTitul.setText("");
+                    campoNot.setText("");
+                    campoNotific.setText("");
                     Toast.makeText(getContext(),"Se ha registrado con exito",Toast.LENGTH_SHORT).show();
                 }else{
                     Toast.makeText(getContext(),"No se ha registrado ",Toast.LENGTH_SHORT).show();
@@ -402,17 +261,29 @@ public class RegistrarUsuarioFragment extends Fragment {
         }){
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                String documento=campoDocumento.getText().toString();
-                String nombre=campoNombre.getText().toString();
-                String profesion=campoProfesion.getText().toString();
+                String ubicacion=campoUbic.getText().toString();
+                String titulo=campoTitul.getText().toString();
+                /*String fecha="2019-05-06";
+                String inicio="05:05:05";
+                String fin="05:05:05";
+                String nota="Esta es una nota";
+                String notificar="2019-05-06 05:05:05";*/
+                String fecha=campoFec.getText().toString();
+                String inicio=campoIni.getText().toString();
+                String fin=campoFi.getText().toString();
+                String nota=campoNot.getText().toString();
+                String notificar=campoNotific.getText().toString();
 
-                String imagen=convertirImgString(bitmap);
 
                 Map<String,String> parametros=new HashMap<>();
-                parametros.put("documento",documento);
-                parametros.put("nombre",nombre);
-                parametros.put("profesion",profesion);
-                parametros.put("imagen",imagen);
+                parametros.put("ubicacion",ubicacion);
+                parametros.put("titulo",titulo);
+                parametros.put("fecha",fecha);
+                parametros.put("inicio",inicio);
+                parametros.put("fin",fin);
+                parametros.put("nota",nota);
+                parametros.put("notificar",notificar);
+                parametros.put("id","1");
 
                 return parametros;
             }

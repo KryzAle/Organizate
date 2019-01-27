@@ -25,7 +25,7 @@ import java.util.ArrayList;
 
 import com.kryzcorp.kryzale.organizate.R;
 import com.kryzcorp.kryzale.organizate.adapter.UsuariosImagenAdapter;
-import com.kryzcorp.kryzale.organizate.entidades.Usuario;
+import com.kryzcorp.kryzale.organizate.entidades.Evento;
 import com.kryzcorp.kryzale.organizate.entidades.VolleySingleton;
 
 
@@ -51,7 +51,7 @@ public class ConsutarListausuarioImagenFragment extends Fragment
     private OnFragmentInteractionListener mListener;
 
     RecyclerView recyclerUsuarios;
-    ArrayList<Usuario> listaUsuarios;
+    ArrayList<Evento> listaEventos;
 
     ProgressDialog dialog;
 
@@ -95,7 +95,7 @@ public class ConsutarListausuarioImagenFragment extends Fragment
                              Bundle savedInstanceState) {
         View vista= inflater.inflate(R.layout.fragment_consutar_listausuario_imagen, container, false);;
 
-        listaUsuarios=new ArrayList<>();
+        listaEventos =new ArrayList<>();
 
         recyclerUsuarios = (RecyclerView) vista.findViewById(R.id.idRecyclerImagen);
         recyclerUsuarios.setLayoutManager(new LinearLayoutManager(this.getContext()));
@@ -124,25 +124,29 @@ public class ConsutarListausuarioImagenFragment extends Fragment
 
     @Override
     public void onResponse(JSONObject response) {
-        Usuario usuario=null;
+        Evento evento =null;
 
-        JSONArray json=response.optJSONArray("usuario");
+        JSONArray json=response.optJSONArray("evento");
 
         try {
 
             for (int i=0;i<json.length();i++){
-                usuario=new Usuario();
+                evento =new Evento();
                 JSONObject jsonObject=null;
                 jsonObject=json.getJSONObject(i);
 
-                usuario.setDocumento(jsonObject.optInt("documento"));
-                usuario.setNombre(jsonObject.optString("nombre"));
-                usuario.setProfesion(jsonObject.optString("profesion"));
-                usuario.setDato(jsonObject.optString("imagen"));
-                listaUsuarios.add(usuario);
+                evento.setUbicacion(jsonObject.optString("ubicacion"));
+                evento.setTitulo(jsonObject.optString("titulo"));
+                evento.setFecha(jsonObject.optString("fecha"));
+                evento.setInicio(jsonObject.optString("inicio"));
+                evento.setFin(jsonObject.optString("fin"));
+                evento.setNota(jsonObject.optString("nota"));
+                evento.setNotificar(jsonObject.optString("notificar"));
+                evento.setIdUser(jsonObject.optInt("id"));
+                listaEventos.add(evento);
             }
             dialog.hide();
-            UsuariosImagenAdapter adapter=new UsuariosImagenAdapter(listaUsuarios);
+            UsuariosImagenAdapter adapter=new UsuariosImagenAdapter(listaEventos);
             recyclerUsuarios.setAdapter(adapter);
 
         } catch (JSONException e) {

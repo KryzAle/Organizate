@@ -7,17 +7,17 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.kryzcorp.kryzale.organizate.entidades.Usuario;
+import com.kryzcorp.kryzale.organizate.entidades.Evento;
 import com.kryzcorp.kryzale.organizate.R;
 import java.util.List;
 
 
 public class UsuariosImagenAdapter extends RecyclerView.Adapter<UsuariosImagenAdapter.UsuariosHolder>{
 
-    List<Usuario> listaUsuarios;
+    List<Evento> listaEventos;
 
-    public UsuariosImagenAdapter(List<Usuario> listaUsuarios) {
-        this.listaUsuarios = listaUsuarios;
+    public UsuariosImagenAdapter(List<Evento> listaEventos) {
+        this.listaEventos = listaEventos;
     }
 
     @Override
@@ -31,20 +31,15 @@ public class UsuariosImagenAdapter extends RecyclerView.Adapter<UsuariosImagenAd
 
     @Override
     public void onBindViewHolder(UsuariosHolder holder, int position) {
-        holder.txtDocumento.setText(listaUsuarios.get(position).getDocumento().toString());
-        holder.txtNombre.setText(listaUsuarios.get(position).getNombre().toString());
-        holder.txtProfesion.setText(listaUsuarios.get(position).getProfesion().toString());
+        holder.txtDocumento.setText(listaEventos.get(position).getNotificar().toString());
+        holder.txtNombre.setText(listaEventos.get(position).getTitulo().toString());
+        holder.txtProfesion.setText(listaEventos.get(position).getNota().toString());
 
-        if (listaUsuarios.get(position).getImagen()!=null){
-            holder.imagen.setImageBitmap(listaUsuarios.get(position).getImagen());
-        }else{
-            holder.imagen.setImageResource(R.drawable.img_base);
-        }
     }
 
     @Override
     public int getItemCount() {
-        return listaUsuarios.size();
+        return listaEventos.size();
     }
 
     public class UsuariosHolder extends RecyclerView.ViewHolder{

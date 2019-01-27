@@ -10,20 +10,20 @@ import java.util.List;
 
 
 import com.kryzcorp.kryzale.organizate.R;
-import com.kryzcorp.kryzale.organizate.entidades.Usuario;
+import com.kryzcorp.kryzale.organizate.entidades.Evento;
 
 
 public class UsuariosAdapter extends RecyclerView.Adapter<UsuariosAdapter.UsuariosHolder>{
 
-    List<Usuario> listaUsuarios;
+    List<Evento> listaEventos;
 
-    public UsuariosAdapter(List<Usuario> listaUsuarios) {
-        this.listaUsuarios = listaUsuarios;
+    public UsuariosAdapter(List<Evento> listaEventos) {
+        this.listaEventos = listaEventos;
     }
 
     @Override
     public UsuariosHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View vista= LayoutInflater.from(parent.getContext()).inflate(R.layout.usuarios_list,parent,false);
+        View vista= LayoutInflater.from(parent.getContext()).inflate(R.layout.eventos_list,parent,false);
         RecyclerView.LayoutParams layoutParams=new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
         vista.setLayoutParams(layoutParams);
@@ -32,25 +32,33 @@ public class UsuariosAdapter extends RecyclerView.Adapter<UsuariosAdapter.Usuari
 
     @Override
     public void onBindViewHolder(UsuariosHolder holder, int position) {
-        holder.txtDocumento.setText(listaUsuarios.get(position).getDocumento().toString());
-        holder.txtNombre.setText(listaUsuarios.get(position).getNombre().toString());
-        holder.txtProfesion.setText(listaUsuarios.get(position).getProfesion().toString());
+        holder.txtUbic.setText(listaEventos.get(position).getUbicacion().toString());
+        holder.txtTit.setText(listaEventos.get(position).getTitulo().toString());
+        holder.txtfec.setText(listaEventos.get(position).getFecha().toString());
+        holder.txtIni.setText(listaEventos.get(position).getInicio().toString());
+        holder.txtFin.setText(listaEventos.get(position).getFin().toString());
+        holder.txtNot.setText(listaEventos.get(position).getNota().toString());
+        holder.txtNotific.setText(listaEventos.get(position).getNotificar().toString());
     }
 
     @Override
     public int getItemCount() {
-        return listaUsuarios.size();
+        return listaEventos.size();
     }
 
     public class UsuariosHolder extends RecyclerView.ViewHolder{
 
-        TextView txtDocumento,txtNombre,txtProfesion;
+        TextView txtUbic,txtTit,txtfec,txtIni,txtFin, txtNot,txtNotific;
 
         public UsuariosHolder(View itemView) {
             super(itemView);
-            txtDocumento= (TextView) itemView.findViewById(R.id.txtDocumento);
-            txtNombre= (TextView) itemView.findViewById(R.id.txtNombre);
-            txtProfesion= (TextView) itemView.findViewById(R.id.txtProfesion);
+            txtUbic= (TextView) itemView.findViewById(R.id.txtUbicacion);
+            txtTit= (TextView) itemView.findViewById(R.id.txtTitulo);
+            txtfec= (TextView) itemView.findViewById(R.id.txtFecha);
+            txtIni= (TextView) itemView.findViewById(R.id.txtInicio);
+            txtFin= (TextView) itemView.findViewById(R.id.txtFin);
+            txtNot= (TextView) itemView.findViewById(R.id.txtNota);
+            txtNotific= (TextView) itemView.findViewById(R.id.txtNotificar);
 
         }
     }

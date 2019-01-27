@@ -49,7 +49,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.kryzcorp.kryzale.organizate.R;
-import com.kryzcorp.kryzale.organizate.entidades.Usuario;
+import com.kryzcorp.kryzale.organizate.entidades.Evento;
 import com.kryzcorp.kryzale.organizate.entidades.VolleySingleton;
 
 import static android.Manifest.permission.CAMERA;
@@ -208,24 +208,29 @@ public class ConsultaUsuarioUrlFragment extends Fragment {
             public void onResponse(JSONObject response) {
                 pDialog.hide();
 
-                Usuario miUsuario=new Usuario();
+                Evento miEvento =new Evento();
 
                 JSONArray json=response.optJSONArray("usuario");
                 JSONObject jsonObject=null;
 
                 try {
                     jsonObject=json.getJSONObject(0);
-                    miUsuario.setNombre(jsonObject.optString("nombre"));
-                    miUsuario.setProfesion(jsonObject.optString("profesion"));
-                    miUsuario.setRutaImagen(jsonObject.optString("ruta_imagen"));
+                    miEvento.setUbicacion(jsonObject.optString("ubicacion"));
+                    miEvento.setTitulo(jsonObject.optString("titulo"));
+                    miEvento.setFecha(jsonObject.optString("fecha"));
+                    miEvento.setInicio(jsonObject.optString("inicio"));
+                    miEvento.setFin(jsonObject.optString("fin"));
+                    miEvento.setNota(jsonObject.optString("nota"));
+                    miEvento.setNotificar(jsonObject.optString("notificar"));
+                    miEvento.setIdUser(jsonObject.optInt("id"));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
-                etiNombre.setText(miUsuario.getNombre());//SE MODIFICA
-                etiProfesion.setText(miUsuario.getProfesion());//SE MODIFICA
+                etiNombre.setText(miEvento.getTitulo());//SE MODIFICA
+                etiProfesion.setText(miEvento.getNota());//SE MODIFICA
 
-                String urlImagen=ip+"/"+miUsuario.getRutaImagen();
+                String urlImagen=ip+"/"+ miEvento.getInicio();
                 //Toast.makeText(getContext(), "url "+urlImagen, Toast.LENGTH_LONG).show();
                 cargarWebServiceImagen(urlImagen);
             }

@@ -26,18 +26,18 @@ import java.util.ArrayList;
 
 import com.kryzcorp.kryzale.organizate.R;
 import com.kryzcorp.kryzale.organizate.adapter.UsuariosAdapter;
-import com.kryzcorp.kryzale.organizate.entidades.Usuario;
+import com.kryzcorp.kryzale.organizate.entidades.Evento;
 import com.kryzcorp.kryzale.organizate.entidades.VolleySingleton;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link ConsultarListaUsuariosFragment.OnFragmentInteractionListener} interface
+ * {@link ConsultarListaEventosFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link ConsultarListaUsuariosFragment#newInstance} factory method to
+ * Use the {@link ConsultarListaEventosFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ConsultarListaUsuariosFragment extends Fragment implements Response.Listener<JSONObject>,Response.ErrorListener{
+public class ConsultarListaEventosFragment extends Fragment implements Response.Listener<JSONObject>,Response.ErrorListener{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -50,7 +50,7 @@ public class ConsultarListaUsuariosFragment extends Fragment implements Response
     private OnFragmentInteractionListener mListener;
 
     RecyclerView recyclerUsuarios;
-    ArrayList<Usuario> listaUsuarios;
+    ArrayList<Evento> listaEventos;
 
     ProgressDialog progress;
 
@@ -58,7 +58,7 @@ public class ConsultarListaUsuariosFragment extends Fragment implements Response
     JsonObjectRequest jsonObjectRequest;
 
 
-    public ConsultarListaUsuariosFragment() {
+    public ConsultarListaEventosFragment() {
         // Required empty public constructor
     }
 
@@ -68,11 +68,11 @@ public class ConsultarListaUsuariosFragment extends Fragment implements Response
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment ConsultarListaUsuariosFragment.
+     * @return A new instance of fragment ConsultarListaEventosFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ConsultarListaUsuariosFragment newInstance(String param1, String param2) {
-        ConsultarListaUsuariosFragment fragment = new ConsultarListaUsuariosFragment();
+    public static ConsultarListaEventosFragment newInstance(String param1, String param2) {
+        ConsultarListaEventosFragment fragment = new ConsultarListaEventosFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -92,9 +92,9 @@ public class ConsultarListaUsuariosFragment extends Fragment implements Response
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View vista=inflater.inflate(R.layout.fragment_consultar_lista_usuarios, container, false);
+        View vista=inflater.inflate(R.layout.fragment_consultar_lista_eventos, container, false);
 
-        listaUsuarios=new ArrayList<>();
+        listaEventos =new ArrayList<>();
 
         recyclerUsuarios= (RecyclerView) vista.findViewById(R.id.idRecycler);
         recyclerUsuarios.setLayoutManager(new LinearLayoutManager(this.getContext()));
@@ -116,7 +116,8 @@ public class ConsultarListaUsuariosFragment extends Fragment implements Response
 
         String ip=getString(R.string.ip);
 
-        String url=ip+"/wsJSONConsultarLista.php";
+        String url=ip+"/wsJSONConsultarEventoList.php?id_usuario=1";
+
 
         jsonObjectRequest=new JsonObjectRequest(Request.Method.GET,url,null,this,this);
        // request.add(jsonObjectRequest);
@@ -133,24 +134,29 @@ public class ConsultarListaUsuariosFragment extends Fragment implements Response
 
     @Override
     public void onResponse(JSONObject response) {
-        Usuario usuario=null;
+        Evento evento =null;
 
-        JSONArray json=response.optJSONArray("usuario");
+        JSONArray json=response.optJSONArray("evento");
 
         try {
 
             for (int i=0;i<json.length();i++){
-                usuario=new Usuario();
+                evento =new Evento();
                 JSONObject jsonObject=null;
                 jsonObject=json.getJSONObject(i);
 
-                usuario.setDocumento(jsonObject.optInt("documento"));
-                usuario.setNombre(jsonObject.optString("nombre"));
-                usuario.setProfesion(jsonObject.optString("profesion"));
-                listaUsuarios.add(usuario);
+                evento.setUbicacion(jsonObject.optString("ubicacion"));
+                evento.setTitulo(jsonObject.optString("titulo"));
+                evento.setFecha(jsonObject.optString("fecha"));
+                evento.setInicio(jsonObject.optString("inicio"));
+                evento.setFin(jsonObject.optString("fin"));
+                evento.setNota(jsonObject.optString("nota"));
+                evento.setNotificar(jsonObject.optString("notificar"));
+                evento.setIdUser(jsonObject.optInt("id"));
+                listaEventos.add(evento);
             }
             progress.hide();
-            UsuariosAdapter adapter=new UsuariosAdapter(listaUsuarios);
+            UsuariosAdapter adapter=new UsuariosAdapter(listaEventos);
             recyclerUsuarios.setAdapter(adapter);
 
         } catch (JSONException e) {

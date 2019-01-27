@@ -7,8 +7,13 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.kryzcorp.kryzale.organizate.R;
+
+import sun.bob.mcalendarview.MCalendarView;
+import sun.bob.mcalendarview.listeners.OnDateClickListener;
+import sun.bob.mcalendarview.vo.DateData;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -64,8 +69,20 @@ public class BienvenidaFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_bienvenida, container, false);
+        View vista= inflater.inflate(R.layout.fragment_bienvenida, container, false);
+        MCalendarView calendarView = (MCalendarView) vista.findViewById(R.id.calendar);
+        calendarView.markDate(2019, 1, 9);
+        calendarView.markDate(2019, 1, 17);
+        calendarView.markDate(2019, 1, 15);
+
+        calendarView.setOnDateClickListener(new OnDateClickListener() {
+            @Override
+            public void onDateClick(View view, DateData date) {
+                Toast.makeText(getActivity().getApplicationContext(), "Today is : " + date.getDayString(), Toast.LENGTH_LONG).show();
+            }
+        });
+
+        return vista;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

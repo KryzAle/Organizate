@@ -10,27 +10,15 @@
         <item
             android:id="@+id/nav_registro"
             android:icon="@android:drawable/ic_menu_add"
-            android:title="Registrar usuario" />
-        <item
-            android:id="@+id/nav_consulta_individual"
-            android:icon="@android:drawable/ic_menu_search"
-            android:title="Consultar Usuario" />
-        <item
-            android:id="@+id/nav_consulta_Url"
-            android:icon="@android:drawable/ic_menu_search"
-            android:title="Consultar Usuario con URL" />
+            android:title="Agregar Evento" />
         <item
             android:id="@+id/nav_consulta_gral"
             android:icon="@android:drawable/ic_menu_search"
-            android:title="Consultar Lista de Usuarios" />
+            android:title="Mis Eventos" />
         <item
             android:id="@+id/nav_consulta_gral_img"
             android:icon="@android:drawable/ic_menu_search"
-            android:title="Lista de Usuarios Imagen" />
-        <item
-            android:id="@+id/nav_consulta_gral_img_url"
-            android:icon="@android:drawable/ic_menu_search"
-            android:title="Lista de Usuarios Imagen URL" />
+            android:title="Buscar Evento" />
     </group>
 
     <item android:title="Información">

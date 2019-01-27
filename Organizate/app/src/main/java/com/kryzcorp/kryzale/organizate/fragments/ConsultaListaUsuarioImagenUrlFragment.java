@@ -26,7 +26,7 @@ import java.util.ArrayList;
 
 import com.kryzcorp.kryzale.organizate.R;
 import com.kryzcorp.kryzale.organizate.adapter.UsuariosImagenUrlAdapter;
-import com.kryzcorp.kryzale.organizate.entidades.Usuario;
+import com.kryzcorp.kryzale.organizate.entidades.Evento;
 import com.kryzcorp.kryzale.organizate.entidades.VolleySingleton;
 
 /**
@@ -50,7 +50,7 @@ public class ConsultaListaUsuarioImagenUrlFragment extends Fragment implements R
     private OnFragmentInteractionListener mListener;
 
     RecyclerView recyclerUsuarios;
-    ArrayList<Usuario> listaUsuarios;
+    ArrayList<Evento> listaEventos;
 
     ProgressDialog dialog;
 
@@ -93,7 +93,7 @@ public class ConsultaListaUsuarioImagenUrlFragment extends Fragment implements R
                              Bundle savedInstanceState) {
         View vista= inflater.inflate(R.layout.fragment_consulta_lista_usuario_imagen_url, container, false);
 
-        listaUsuarios=new ArrayList<>();
+        listaEventos =new ArrayList<>();
 
         recyclerUsuarios = (RecyclerView) vista.findViewById(R.id.idRecyclerImagen);
         recyclerUsuarios.setLayoutManager(new LinearLayoutManager(this.getContext()));
@@ -122,25 +122,29 @@ public class ConsultaListaUsuarioImagenUrlFragment extends Fragment implements R
 
     @Override
     public void onResponse(JSONObject response) {
-        Usuario usuario=null;
+        Evento evento =null;
 
-        JSONArray json=response.optJSONArray("usuario");
+        JSONArray json=response.optJSONArray("evento");
 
         try {
 
             for (int i=0;i<json.length();i++){
-                usuario=new Usuario();
+                evento =new Evento();
                 JSONObject jsonObject=null;
                 jsonObject=json.getJSONObject(i);
 
-                usuario.setDocumento(jsonObject.optInt("documento"));
-                usuario.setNombre(jsonObject.optString("nombre"));
-                usuario.setProfesion(jsonObject.optString("profesion"));
-                usuario.setRutaImagen(jsonObject.optString("ruta_imagen"));
-                listaUsuarios.add(usuario);
+                evento.setUbicacion(jsonObject.optString("ubicacion"));
+                evento.setTitulo(jsonObject.optString("titulo"));
+                evento.setFecha(jsonObject.optString("fecha"));
+                evento.setInicio(jsonObject.optString("inicio"));
+                evento.setFin(jsonObject.optString("fin"));
+                evento.setNota(jsonObject.optString("nota"));
+                evento.setNotificar(jsonObject.optString("notificar"));
+                evento.setIdUser(jsonObject.optInt("id"));
+                listaEventos.add(evento);
             }
             dialog.hide();
-            UsuariosImagenUrlAdapter adapter=new UsuariosImagenUrlAdapter(listaUsuarios, getContext());
+            UsuariosImagenUrlAdapter adapter=new UsuariosImagenUrlAdapter(listaEventos, getContext());
             recyclerUsuarios.setAdapter(adapter);
 
         } catch (JSONException e) {

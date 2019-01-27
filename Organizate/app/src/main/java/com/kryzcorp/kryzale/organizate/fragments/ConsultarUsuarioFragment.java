@@ -25,7 +25,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.kryzcorp.kryzale.organizate.R;
-import com.kryzcorp.kryzale.organizate.entidades.Usuario;
+import com.kryzcorp.kryzale.organizate.entidades.Evento;
 import com.kryzcorp.kryzale.organizate.entidades.VolleySingleton;
 
 /**
@@ -142,28 +142,27 @@ public class ConsultarUsuarioFragment extends Fragment implements Response.Liste
 
     //    Toast.makeText(getContext(),"Mensaje: "+response,Toast.LENGTH_SHORT).show();
 
-        Usuario miUsuario=new Usuario();
+        Evento miEvento =new Evento();
 
         JSONArray json=response.optJSONArray("usuario");
         JSONObject jsonObject=null;
 
         try {
             jsonObject=json.getJSONObject(0);
-            miUsuario.setNombre(jsonObject.optString("nombre"));
-            miUsuario.setProfesion(jsonObject.optString("profesion"));
-            miUsuario.setDato(jsonObject.optString("imagen"));
+            miEvento.setUbicacion(jsonObject.optString("ubicacion"));
+            miEvento.setTitulo(jsonObject.optString("titulo"));
+            miEvento.setFecha(jsonObject.optString("fecha"));
+            miEvento.setInicio(jsonObject.optString("inicio"));
+            miEvento.setFin(jsonObject.optString("fin"));
+            miEvento.setNota(jsonObject.optString("nota"));
+            miEvento.setNotificar(jsonObject.optString("notificar"));
+            miEvento.setIdUser(jsonObject.optInt("id"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        txtNombre.setText("Nombre :"+miUsuario.getNombre());
-        txtProfesion.setText("Profesion :"+miUsuario.getProfesion());
-
-        if (miUsuario.getImagen()!=null){
-            campoImagen.setImageBitmap(miUsuario.getImagen());
-        }else{
-            campoImagen.setImageResource(R.drawable.img_base);
-        }
+        txtNombre.setText("Nombre :"+ miEvento.getTitulo());
+        txtProfesion.setText("Profesion :"+ miEvento.getNota());
 
 
     }
