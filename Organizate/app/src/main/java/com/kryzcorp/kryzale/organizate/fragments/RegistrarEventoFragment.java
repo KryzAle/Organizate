@@ -247,7 +247,7 @@ public class RegistrarEventoFragment extends Fragment {
                     campoNotific.setText("");
                     Toast.makeText(getContext(),"Se ha registrado con exito",Toast.LENGTH_SHORT).show();
                 }else{
-                    Toast.makeText(getContext(),"No se ha registrado ",Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getContext(),"No se ha registrado ",Toast.LENGTH_SHORT).show();
                     Log.i("RESPUESTA: ",""+response);
                 }
 
