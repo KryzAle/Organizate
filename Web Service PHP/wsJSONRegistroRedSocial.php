@@ -13,7 +13,7 @@ if(isset($_POST["id_redsocial"])){
 	$resultado_insert = mysqli_query($conexion,$insert);
 		
 	if($resultado_insert){
-		echo json_encode("registra");
+		echo json_encode($resultado_insert);
 	}else{
 		echo json_encode("noregistra");
 	}

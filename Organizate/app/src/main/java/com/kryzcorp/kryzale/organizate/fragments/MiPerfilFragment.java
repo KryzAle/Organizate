@@ -2,8 +2,12 @@ package com.kryzcorp.kryzale.organizate.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.Preference;
+import android.preference.PreferenceActivity;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +33,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 
+import static android.content.Context.MODE_PRIVATE;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 /**
@@ -117,7 +122,8 @@ public class MiPerfilFragment extends Fragment {
         };
 
         if (AccessToken.getCurrentAccessToken() == null) {
-            goLoginScreen();
+            nameTextView.setText(getFromSharedPreferencesname());
+            idTextView.setText(String.valueOf(getFromSharedPreferencesID()));
         } else {
             requestEmail(AccessToken.getCurrentAccessToken());
 
@@ -165,6 +171,7 @@ public class MiPerfilFragment extends Fragment {
 
     public void logout(View view) {
         LoginManager.getInstance().logOut();
+        saveLoginSharedPreferences(0,"null",false);
         goLoginScreen();
     }
 
@@ -180,6 +187,7 @@ public class MiPerfilFragment extends Fragment {
                 .load(photoUrl)
                 .into(photoImageView);
     }
+
 
     @Override
     public void onDestroy() {
@@ -225,5 +233,23 @@ public class MiPerfilFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+    private int getFromSharedPreferencesID() {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        int id = sharedPref.getInt("idUsuario",0);
+        return id;
+    }
+    private String getFromSharedPreferencesname() {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String id = sharedPref.getString("nombreUsuario","");
+        return id;
+    }
+    private void saveLoginSharedPreferences(int id,String nombre,boolean logeado){
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putInt("idUsuario",id );
+        editor.putString("nombreUsuario",nombre);
+        editor.putBoolean("logeado",logeado);
+        editor.apply();
     }
 }
