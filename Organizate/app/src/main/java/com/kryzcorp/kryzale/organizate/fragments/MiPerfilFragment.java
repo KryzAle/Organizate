@@ -28,6 +28,7 @@ import android.widget.Toast;
 
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.kryzcorp.kryzale.organizate.ini;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -164,9 +165,10 @@ public class MiPerfilFragment extends Fragment {
     }
 
     private void goLoginScreen() {
-        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        Intent intent = new Intent(getApplicationContext(), ini.class);
         startActivity(intent);
+        getActivity().finish();
+
     }
 
     public void logout(View view) {

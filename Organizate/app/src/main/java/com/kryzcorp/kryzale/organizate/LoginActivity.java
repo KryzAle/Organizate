@@ -90,7 +90,6 @@ public class LoginActivity extends AppCompatActivity {
                 parameters.putString("fields", "id, first_name, last_name, email, gender, birthday, location");
                 request.setParameters(parameters);
                 request.executeAsync();
-                goMainScreen();
             }
 
             @Override
@@ -121,6 +120,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     if (jsonObject.getInt("id")!=0){
                         saveLoginSharedPreferences(jsonObject.getInt("id"),jsonObject.getString("nombre"),true);
+                        goMainScreen();
                     }else{
                         saveLoginSharedPreferences(0,"null",false);
                     }
