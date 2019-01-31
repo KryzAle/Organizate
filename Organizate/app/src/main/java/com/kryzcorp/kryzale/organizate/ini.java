@@ -1,7 +1,10 @@
 package com.kryzcorp.kryzale.organizate;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -28,10 +31,14 @@ public class ini extends AppCompatActivity {
 
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
         boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
-        if (isLoggedIn){
+        if (getFromSharedPreferencesLogin()){
             goMainScreen();
         }
-
+    }
+    private boolean getFromSharedPreferencesLogin() {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean logeado = sharedPref.getBoolean("logeado",false);
+        return logeado;
     }
     public void LanzarLogin(View view){
 
