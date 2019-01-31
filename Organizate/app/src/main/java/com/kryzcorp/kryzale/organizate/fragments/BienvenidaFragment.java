@@ -112,7 +112,6 @@ public class BienvenidaFragment extends Fragment implements Response.Listener<JS
         ArrayList<DateData> dates = calendarView.getMarkedDates().getAll();
         fechas=dates;
         cargarWebService();
-        final int numeroEventos = packeventos.size()-2;
 
 
         calendarView.setOnDateClickListener(new OnDateClickListener() {
@@ -169,14 +168,14 @@ public class BienvenidaFragment extends Fragment implements Response.Listener<JS
         return id;
     }
     private void cargarWebService() {
-        int tamaño = fechas.size();
+        /*int tamaño = fechas.size();
         while (tamaño!=0){
             int year=fechas.get(0).getYear();
             int mes =fechas.get(0).getMonth();
             int dia = fechas.get(0).getDay();
             Toast.makeText(getContext(),year+"-"+mes+"-"+dia,Toast.LENGTH_SHORT).show();
             calendarView.unMarkDate(year,mes,dia);
-        }
+        }*/
         progress=new ProgressDialog(getContext());
         progress.setMessage("Sincronizando...");
         progress.show();

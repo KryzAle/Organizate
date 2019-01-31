@@ -3,8 +3,10 @@ package com.kryzcorp.kryzale.organizate.fragments;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -153,16 +155,22 @@ public class ConsutarListaEventosPorFechaFragment extends Fragment
     private void cargarWebService() {
 
         dialog=new ProgressDialog(getContext());
-        dialog.setMessage("Consultando Imagenes");
+        dialog.setMessage("Buscando evento...");
         dialog.show();
 
         String ip=getString(R.string.ip);
 
-        String url=ip+"/wsJSONConsultarEventoFecha.php?id_usuario="+dameUsuario()+"&fecha="+campoFecha.getText().toString();;
+        String url=ip+"/wsJSONConsultarEventoFecha.php?id_usuario="+String.valueOf(getFromSharedPreferencesID())+"&fecha="+campoFecha.getText().toString();;
         jsonObjectRequest=new JsonObjectRequest(Request.Method.GET,url,null,this,this);
        // request.add(jsonObjectRequest);
         VolleySingleton.getIntanciaVolley(getContext()).addToRequestQueue(jsonObjectRequest);
     }
+    private int getFromSharedPreferencesID() {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
+        int id = sharedPref.getInt("idUsuario",0);
+        return id;
+    }
+
 
     @Override
     public void onResponse(JSONObject response) {

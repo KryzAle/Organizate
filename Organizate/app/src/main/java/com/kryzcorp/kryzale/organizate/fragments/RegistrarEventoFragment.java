@@ -6,6 +6,7 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,6 +16,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -315,10 +317,6 @@ public class RegistrarEventoFragment extends Fragment {
 
 
     }
-
-
-
-
     ///////////////
     private void cargarWebService() {
 
@@ -382,7 +380,7 @@ public class RegistrarEventoFragment extends Fragment {
                 parametros.put("fin",fin);
                 parametros.put("nota",nota);
                 parametros.put("notificar",notificar);
-                parametros.put("id","1");
+                parametros.put("id",String.valueOf(getFromSharedPreferencesID()));
 
                 return parametros;
             }
@@ -390,6 +388,11 @@ public class RegistrarEventoFragment extends Fragment {
         //request.add(stringRequest);
         stringRequest.setRetryPolicy(new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 2, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         VolleySingleton.getIntanciaVolley(getContext()).addToRequestQueue(stringRequest);
+    }
+    private int getFromSharedPreferencesID() {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
+        int id = sharedPref.getInt("idUsuario",0);
+        return id;
     }
 
     private String convertirImgString(Bitmap bitmap) {

@@ -2,8 +2,10 @@ package com.kryzcorp.kryzale.organizate.fragments;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -106,6 +108,11 @@ public class ConsultarListaEventosFragment extends Fragment implements Response.
         return vista;
 
     }
+    private int getFromSharedPreferencesID() {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
+        int id = sharedPref.getInt("idUsuario",0);
+        return id;
+    }
 
     private void cargarWebService() {
 
@@ -115,7 +122,7 @@ public class ConsultarListaEventosFragment extends Fragment implements Response.
 
         String ip=getString(R.string.ip);
 
-        String url=ip+"/wsJSONConsultarEventoList.php?id_usuario=1";
+        String url=ip+"/wsJSONConsultarEventoList.php?id_usuario="+String.valueOf(getFromSharedPreferencesID());
 
 
         jsonObjectRequest=new JsonObjectRequest(Request.Method.GET,url,null,this,this);
@@ -144,6 +151,7 @@ public class ConsultarListaEventosFragment extends Fragment implements Response.
                 JSONObject jsonObject=null;
                 jsonObject=json.getJSONObject(i);
 
+                evento.setIdEvento(jsonObject.optInt("id_evento"));
                 evento.setUbicacion(jsonObject.optString("ubicacion"));
                 evento.setTitulo(jsonObject.optString("titulo"));
                 evento.setFecha(jsonObject.optString("fecha"));
@@ -151,7 +159,7 @@ public class ConsultarListaEventosFragment extends Fragment implements Response.
                 evento.setFin(jsonObject.optString("fin"));
                 evento.setNota(jsonObject.optString("nota"));
                 evento.setNotificar(jsonObject.optString("notificar"));
-                evento.setIdUser(jsonObject.optInt("id"));
+                evento.setIdUser(jsonObject.optInt("id_usuario"));
                 listaEventos.add(evento);
             }
             progress.hide();
