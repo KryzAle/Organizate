@@ -101,6 +101,7 @@
         android:layout_marginBottom="139dp"
         android:text="O Ingresar con"
         android:textColor="#FFFF"
+        android:fontFamily="@font/coming_soon"
         android:textSize="34px" />
 
 
