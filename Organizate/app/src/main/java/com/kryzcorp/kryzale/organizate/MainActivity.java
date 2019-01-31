@@ -98,7 +98,6 @@ public class MainActivity extends AppCompatActivity
             miFragment=new ConsutarListaEventosPorFechaFragment();
             fragmentSeleccionado=true;
         } else if (id == R.id.nav_mi_perfil) {
-
             miFragment=new MiPerfilFragment();
             fragmentSeleccionado=true;
         }

@@ -23,7 +23,6 @@ import com.kryzcorp.kryzale.organizate.entidades.VolleySingleton;
 
 
 public class EventosAdapter extends RecyclerView.Adapter<EventosAdapter.UsuariosHolder>{
-    int iddelEvento;
     StringRequest cadenaRequest;
 
     List<Evento> listaEventos;
@@ -50,7 +49,7 @@ public class EventosAdapter extends RecyclerView.Adapter<EventosAdapter.Usuarios
         holder.txtFin.setText(listaEventos.get(position).getFin().toString());
         holder.txtNot.setText(listaEventos.get(position).getNota().toString());
         holder.txtNotific.setText(listaEventos.get(position).getNotificar().toString());
-        iddelEvento = listaEventos.get(position).getIdEvento();
+        holder.txtId.setText(String.valueOf(listaEventos.get(position).getIdEvento()));
     }
 
     @Override
@@ -60,7 +59,7 @@ public class EventosAdapter extends RecyclerView.Adapter<EventosAdapter.Usuarios
 
     public class UsuariosHolder extends RecyclerView.ViewHolder{
 
-        TextView txtUbic,txtTit,txtfec,txtIni,txtFin, txtNot,txtNotific;
+        TextView txtUbic,txtTit,txtfec,txtIni,txtFin, txtNot,txtNotific,txtId;
         Button justDelete;
 
 
@@ -72,18 +71,19 @@ public class EventosAdapter extends RecyclerView.Adapter<EventosAdapter.Usuarios
             txtIni= (TextView) itemView.findViewById(R.id.txtInicio);
             txtFin= (TextView) itemView.findViewById(R.id.txtFin);
             txtNot= (TextView) itemView.findViewById(R.id.txtNota);
+            txtId= (TextView) itemView.findViewById(R.id.tvid);
             txtNotific= (TextView) itemView.findViewById(R.id.txtNotificar);
             justDelete = itemView.findViewById(R.id.btnDelete);
             justDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    webServiceEliminar();
-                    Toast.makeText(itemView.getContext(),"Eliminando..." +txtUbic.getText().toString(), Toast.LENGTH_LONG).show();
+                    webServiceEliminar(txtId.getText().toString());
+                    Toast.makeText(itemView.getContext(),"Eliminando..." +txtTit.getText().toString(), Toast.LENGTH_LONG).show();
                 }
             });
 
         }
-        private void webServiceEliminar() {
+        private void webServiceEliminar(final String iddelEvento) {
             final ProgressDialog pDialog;
             pDialog=new ProgressDialog(itemView.getContext());
             pDialog.setMessage("Cargando...");
@@ -91,7 +91,7 @@ public class EventosAdapter extends RecyclerView.Adapter<EventosAdapter.Usuarios
 
             String ip="https://organizateespe.000webhostapp.com";
 
-            String url=ip+"/wsJSONDeleteEvento.php?id_evento="+String.valueOf(iddelEvento);
+            String url=ip+"/wsJSONDeleteEvento.php?id_evento="+iddelEvento;
 
             cadenaRequest=new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
                 @Override

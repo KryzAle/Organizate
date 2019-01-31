@@ -334,7 +334,6 @@ public class RegistrarEventoFragment extends Fragment {
             public void onResponse(String response) {
                 progreso.hide();
 
-                if (response.trim().equalsIgnoreCase("registra")){
                     campoUbic.setText("");
                     campoFec.setText("");
                     campoFi.setText("");
@@ -343,10 +342,8 @@ public class RegistrarEventoFragment extends Fragment {
                     campoNot.setText("");
                     campoNotific.setText("");
                     Toast.makeText(getContext(),"Se ha registrado con exito",Toast.LENGTH_SHORT).show();
-                }else{
                     //Toast.makeText(getContext(),"No se ha registrado ",Toast.LENGTH_SHORT).show();
                     Log.i("RESPUESTA: ",""+response);
-                }
 
             }
         }, new Response.ErrorListener() {

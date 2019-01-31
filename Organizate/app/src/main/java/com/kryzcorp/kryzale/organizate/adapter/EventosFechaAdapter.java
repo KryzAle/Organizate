@@ -23,7 +23,6 @@ import java.util.List;
 
 
 public class EventosFechaAdapter extends RecyclerView.Adapter<EventosFechaAdapter.UsuariosHolder>{
-    int idEvento;
     StringRequest stringRequest;
 
     List<Evento> listaEventos;
@@ -46,8 +45,7 @@ public class EventosFechaAdapter extends RecyclerView.Adapter<EventosFechaAdapte
         holder.txtTitulo.setText(listaEventos.get(position).getTitulo().toString());
         holder.txtFecha.setText(listaEventos.get(position).getFecha().toString());
         holder.txtNota.setText(listaEventos.get(position).getNota().toString());
-        idEvento = listaEventos.get(position).getIdEvento();
-
+        holder.txtId.setText(String.valueOf(listaEventos.get(position).getIdEvento()));
     }
 
     @Override
@@ -57,7 +55,7 @@ public class EventosFechaAdapter extends RecyclerView.Adapter<EventosFechaAdapte
 
     public class UsuariosHolder extends RecyclerView.ViewHolder{
 
-        TextView txtTitulo,txtFecha,txtNota;
+        TextView txtTitulo,txtFecha,txtNota,txtId;
         ImageView imagen;
         Button eliminarButton;
 
@@ -67,17 +65,18 @@ public class EventosFechaAdapter extends RecyclerView.Adapter<EventosFechaAdapte
             txtFecha= (TextView) itemView.findViewById(R.id.idFecha);
             txtNota= (TextView) itemView.findViewById(R.id.idNota);
             imagen=(ImageView) itemView.findViewById(R.id.idImagen);
+            txtId= (TextView) itemView.findViewById(R.id.tv_id);
             eliminarButton = itemView.findViewById(R.id.btn_eliminar);
             eliminarButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    webServiceEliminar();
+                    webServiceEliminar(txtId.getText().toString());
                     Toast.makeText(itemView.getContext(),"Eliminando..." +txtTitulo.getText().toString(), Toast.LENGTH_LONG).show();
                 }
             });
         }
 
-        private void webServiceEliminar() {
+        private void webServiceEliminar(final String iddelEvento) {
             final ProgressDialog pDialog;
             pDialog=new ProgressDialog(itemView.getContext());
             pDialog.setMessage("Cargando...");
@@ -85,7 +84,7 @@ public class EventosFechaAdapter extends RecyclerView.Adapter<EventosFechaAdapte
 
             String ip="https://organizateespe.000webhostapp.com";
 
-            String url=ip+"/wsJSONDeleteEvento.php?id_evento="+String.valueOf(idEvento);
+            String url=ip+"/wsJSONDeleteEvento.php?id_evento="+iddelEvento;
 
             stringRequest=new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
                 @Override

@@ -4,6 +4,11 @@
     android:layout_height="match_parent">
 
 
+    <TextView
+        android:id="@+id/tvid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="invisible" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -171,7 +176,10 @@
         android:id="@+id/btnDelete"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Eliminar Evento" />
+        android:background="@android:color/holo_red_dark"
+        android:fontFamily="@font/coming_soon"
+        android:text="Eliminar Evento"
+        android:textColor="@color/cardview_light_background" />
 
     <TextView
         android:layout_marginTop="10dp"

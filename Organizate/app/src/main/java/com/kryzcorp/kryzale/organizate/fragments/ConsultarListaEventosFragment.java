@@ -132,7 +132,7 @@ public class ConsultarListaEventosFragment extends Fragment implements Response.
 
     @Override
     public void onErrorResponse(VolleyError error) {
-        Toast.makeText(getContext(), "No se puede conectar "+error.toString(), Toast.LENGTH_LONG).show();
+        Toast.makeText(getContext(), "No Existen Eventos", Toast.LENGTH_LONG).show();
         System.out.println();
         Log.d("ERROR: ", error.toString());
         progress.hide();

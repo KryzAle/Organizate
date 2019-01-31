@@ -176,6 +176,7 @@ public class BienvenidaFragment extends Fragment implements Response.Listener<JS
             Toast.makeText(getContext(),year+"-"+mes+"-"+dia,Toast.LENGTH_SHORT).show();
             calendarView.unMarkDate(year,mes,dia);
         }*/
+        calendarView.getMarkedDates().getAll().clear();
         progress=new ProgressDialog(getContext());
         progress.setMessage("Sincronizando...");
         progress.show();
@@ -218,7 +219,7 @@ public class BienvenidaFragment extends Fragment implements Response.Listener<JS
     public void onErrorResponse(VolleyError error) {
 
 
-        Toast.makeText(getContext(), "No exiten eventos",Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "No existen eventos",Toast.LENGTH_SHORT).show();
         System.out.println();
         Log.d("ERROR: ", error.toString());
         progress.hide();
