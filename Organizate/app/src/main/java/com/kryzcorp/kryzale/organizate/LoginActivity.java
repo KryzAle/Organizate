@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -58,12 +59,12 @@ public class LoginActivity extends AppCompatActivity {
 
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
         boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
-        if (isLoggedIn){
+        if (getFromSharedPreferencesLogin()){
             goMainScreen();
         }
 
         callbackManager = CallbackManager.Factory.create();
-        loginButton = (LoginButton) findViewById(R.id.loginButton);
+        loginButton = findViewById(R.id.loginButton);
 
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
@@ -79,7 +80,7 @@ public class LoginActivity extends AppCompatActivity {
                         }
                         try {
                             String id = object.getString("id");
-                            verificarFb(id);
+                            verificarFb2(id);
                         } catch (JSONException e) {
                             Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                         }
@@ -89,8 +90,6 @@ public class LoginActivity extends AppCompatActivity {
                 parameters.putString("fields", "id, first_name, last_name, email, gender, birthday, location");
                 request.setParameters(parameters);
                 request.executeAsync();
-
-                goMainScreen();
             }
 
             @Override
@@ -104,18 +103,16 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
-
-    private void verificarFb(final String id) {
-
+    private void verificarFb2(final String id){
         String ip=getString(R.string.ip);
-        String url=ip+"/wsJSONLoginLocal.php?usuario="+id+"&password="+id;
+        String url=ip+"/wsJSONAunteticarFb.php?id_redsocial="+id;
 
         jsonObjectRequest=new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
 
 
-                JSONArray json=response.optJSONArray("user");
+                JSONArray json=response.optJSONArray("usuario");
                 JSONObject jsonObject=null;
 
                 try {
@@ -123,8 +120,9 @@ public class LoginActivity extends AppCompatActivity {
 
                     if (jsonObject.getInt("id")!=0){
                         saveLoginSharedPreferences(jsonObject.getInt("id"),jsonObject.getString("nombre"),true);
+                        goMainScreen();
                     }else{
-                        registrarFb(id);
+                        saveLoginSharedPreferences(0,"null",false);
                     }
 
                 } catch (JSONException e) {
@@ -144,48 +142,6 @@ public class LoginActivity extends AppCompatActivity {
         VolleySingleton.getIntanciaVolley(this).addToRequestQueue(jsonObjectRequest);
     }
 
-    private void registrarFb(final String idFb) {
-
-
-        String ip=getString(R.string.ip);
-
-        String url=ip+"/wsJSONRegistroRedSocial.php?";
-
-        stringRequest=new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-
-            @Override
-            public void onResponse(String response) {
-
-                if (response.trim().equalsIgnoreCase("registra")){
-                    Toast.makeText(getApplicationContext(),"Se ha registrado con exito",Toast.LENGTH_SHORT).show();
-                }else{
-                    Toast.makeText(getApplicationContext(),"No se ha registrado ",Toast.LENGTH_SHORT).show();
-                    Log.i("RESPUESTA: ",""+response);
-                }
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(),"No se ha podido conectar",Toast.LENGTH_SHORT).show();
-
-            }
-        }){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                String idRed=idFb;
-
-
-                Map<String,String> parametros=new HashMap<>();
-                parametros.put("id_redsocial",idRed);
-
-                return parametros;
-            }
-        };
-        //request.add(stringRequest);
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 2, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        VolleySingleton.getIntanciaVolley(this).addToRequestQueue(stringRequest);
-    }
 
     private void goMainScreen() {
         Intent intent = new Intent(this, MainActivity.class);
@@ -209,6 +165,11 @@ public class LoginActivity extends AppCompatActivity {
         int id = sharedPref.getInt(idUsuario,0);
         return id;
     }
+    private boolean getFromSharedPreferencesLogin() {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean logeado = sharedPref.getBoolean("logeado",false);
+        return logeado;
+    }
 
     private void webServiceLogear() {
         pDialog=new ProgressDialog(this);
@@ -223,7 +184,7 @@ public class LoginActivity extends AppCompatActivity {
                 pDialog.hide();
 
 
-                JSONArray json=response.optJSONArray("user");
+                JSONArray json=response.optJSONArray("usuario");
                 JSONObject jsonObject=null;
 
                 try {
@@ -253,8 +214,8 @@ public class LoginActivity extends AppCompatActivity {
         //request.add(stringRequest);
         VolleySingleton.getIntanciaVolley(this).addToRequestQueue(jsonObjectRequest);
     }
-    private void saveLoginSharedPreferences(int id,String nombre,boolean logeado){
-        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+    public void saveLoginSharedPreferences(int id,String nombre,boolean logeado){
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putInt("idUsuario",id );
         editor.putString("nombreUsuario",nombre);

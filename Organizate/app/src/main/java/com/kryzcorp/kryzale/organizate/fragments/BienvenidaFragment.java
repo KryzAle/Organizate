@@ -3,8 +3,11 @@ package com.kryzcorp.kryzale.organizate.fragments;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
@@ -54,6 +57,7 @@ public class BienvenidaFragment extends Fragment implements Response.Listener<JS
     private String mParam1;
     private String mParam2;
     String textoBotonAlert;
+    private ArrayList<DateData> fechas = new ArrayList<>();
     private OnFragmentInteractionListener mListener;
     RecyclerView recyclerUsuarios;
     ArrayList<Evento> packeventos = new ArrayList<Evento>() ;
@@ -95,14 +99,18 @@ public class BienvenidaFragment extends Fragment implements Response.Listener<JS
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View vista= inflater.inflate(R.layout.fragment_bienvenida, container, false);
+
         calendarView = (MCalendarView) vista.findViewById(R.id.calendar);
         btnActualizarCalendar = vista.findViewById(R.id.btnsync);
+        ArrayList<DateData> dates = calendarView.getMarkedDates().getAll();
+        fechas=dates;
         cargarWebService();
         final int numeroEventos = packeventos.size()-2;
 
@@ -155,16 +163,27 @@ public class BienvenidaFragment extends Fragment implements Response.Listener<JS
 
         return vista;
     }
-
+    private int getFromSharedPreferencesID() {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
+        int id = sharedPref.getInt("idUsuario",0);
+        return id;
+    }
     private void cargarWebService() {
-
+        int tamaño = fechas.size();
+        while (tamaño!=0){
+            int year=fechas.get(0).getYear();
+            int mes =fechas.get(0).getMonth();
+            int dia = fechas.get(0).getDay();
+            Toast.makeText(getContext(),year+"-"+mes+"-"+dia,Toast.LENGTH_SHORT).show();
+            calendarView.unMarkDate(year,mes,dia);
+        }
         progress=new ProgressDialog(getContext());
         progress.setMessage("Sincronizando...");
         progress.show();
 
         String ip=getString(R.string.ip);
 
-        String url=ip+"/wsJSONConsultarEventoList.php?id_usuario=1";
+        String url=ip+"/wsJSONConsultarEventoList.php?id_usuario="+String.valueOf(getFromSharedPreferencesID());
 
 
         jsonObjectRequest=new JsonObjectRequest(Request.Method.GET,url,null,this,this);
@@ -198,14 +217,15 @@ public class BienvenidaFragment extends Fragment implements Response.Listener<JS
 
     @Override
     public void onErrorResponse(VolleyError error) {
-        Toast.makeText(getContext(), "No se puede conectar "+error.toString(), Toast.LENGTH_LONG).show();
+
+
+        Toast.makeText(getContext(), "No exiten eventos",Toast.LENGTH_SHORT).show();
         System.out.println();
         Log.d("ERROR: ", error.toString());
         progress.hide();
     }
     @Override
     public void onResponse(JSONObject response) {
-
         String fecha;
         String[] parts;
 
