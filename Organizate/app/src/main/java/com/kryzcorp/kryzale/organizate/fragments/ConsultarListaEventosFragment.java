@@ -17,17 +17,16 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.kryzcorp.kryzale.organizate.R;
+import com.kryzcorp.kryzale.organizate.adapter.EventosAdapter;
+import com.kryzcorp.kryzale.organizate.entidades.Evento;
+import com.kryzcorp.kryzale.organizate.entidades.VolleySingleton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-
-import com.kryzcorp.kryzale.organizate.R;
-import com.kryzcorp.kryzale.organizate.adapter.UsuariosAdapter;
-import com.kryzcorp.kryzale.organizate.entidades.Evento;
-import com.kryzcorp.kryzale.organizate.entidades.VolleySingleton;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -156,7 +155,7 @@ public class ConsultarListaEventosFragment extends Fragment implements Response.
                 listaEventos.add(evento);
             }
             progress.hide();
-            UsuariosAdapter adapter=new UsuariosAdapter(listaEventos);
+            EventosAdapter adapter=new EventosAdapter(listaEventos);
             recyclerUsuarios.setAdapter(adapter);
 
         } catch (JSONException e) {

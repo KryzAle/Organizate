@@ -10,6 +10,7 @@ import android.util.Base64;
 
 public class Evento {
 
+    private int idEvento;
     private String ubicacion;
     private String titulo;
     private String fecha;
@@ -18,6 +19,14 @@ public class Evento {
     private String nota;
     private String notificar;
     private int idUser;
+
+    public int getIdEvento() {
+        return idEvento;
+    }
+
+    public void setIdEvento(int idEvento) {
+        this.idEvento = idEvento;
+    }
 
     public int getIdUser() {
         return idUser;

@@ -2,11 +2,8 @@ package com.kryzcorp.kryzale.organizate.interfaces;
 
 
 import com.kryzcorp.kryzale.organizate.fragments.BienvenidaFragment;
-import com.kryzcorp.kryzale.organizate.fragments.ConsultaListaUsuarioImagenUrlFragment;
-import com.kryzcorp.kryzale.organizate.fragments.ConsultaUsuarioUrlFragment;
 import com.kryzcorp.kryzale.organizate.fragments.ConsultarListaEventosFragment;
-import com.kryzcorp.kryzale.organizate.fragments.ConsultarUsuarioFragment;
-import com.kryzcorp.kryzale.organizate.fragments.ConsutarListausuarioImagenFragment;
+import com.kryzcorp.kryzale.organizate.fragments.ConsutarListaEventosPorFechaFragment;
 import com.kryzcorp.kryzale.organizate.fragments.MiPerfilFragment;
 import com.kryzcorp.kryzale.organizate.fragments.RegistrarEventoFragment;
 
@@ -15,7 +12,6 @@ import com.kryzcorp.kryzale.organizate.fragments.RegistrarEventoFragment;
  */
 
 public interface IFragments extends BienvenidaFragment.OnFragmentInteractionListener,MiPerfilFragment.OnFragmentInteractionListener,
-        RegistrarEventoFragment.OnFragmentInteractionListener,ConsultarUsuarioFragment.OnFragmentInteractionListener,
-        ConsultarListaEventosFragment.OnFragmentInteractionListener,ConsutarListausuarioImagenFragment.OnFragmentInteractionListener,
-        ConsultaUsuarioUrlFragment.OnFragmentInteractionListener,ConsultaListaUsuarioImagenUrlFragment.OnFragmentInteractionListener{
+        RegistrarEventoFragment.OnFragmentInteractionListener,
+        ConsultarListaEventosFragment.OnFragmentInteractionListener,ConsutarListaEventosPorFechaFragment.OnFragmentInteractionListener{
 }

@@ -2,10 +2,11 @@ package com.kryzcorp.kryzale.organizate.fragments;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,7 +20,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.kryzcorp.kryzale.organizate.R;
-import com.kryzcorp.kryzale.organizate.adapter.UsuariosAdapter;
 import com.kryzcorp.kryzale.organizate.entidades.Evento;
 import com.kryzcorp.kryzale.organizate.entidades.VolleySingleton;
 
@@ -32,6 +32,9 @@ import java.util.ArrayList;
 import sun.bob.mcalendarview.MCalendarView;
 import sun.bob.mcalendarview.listeners.OnDateClickListener;
 import sun.bob.mcalendarview.vo.DateData;
+
+import static android.Manifest.permission.CAMERA;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -50,7 +53,7 @@ public class BienvenidaFragment extends Fragment implements Response.Listener<JS
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
+    String textoBotonAlert;
     private OnFragmentInteractionListener mListener;
     RecyclerView recyclerUsuarios;
     ArrayList<Evento> packeventos = new ArrayList<Evento>() ;
@@ -101,6 +104,7 @@ public class BienvenidaFragment extends Fragment implements Response.Listener<JS
         calendarView = (MCalendarView) vista.findViewById(R.id.calendar);
         btnActualizarCalendar = vista.findViewById(R.id.btnsync);
         cargarWebService();
+        final int numeroEventos = packeventos.size()-2;
 
 
         calendarView.setOnDateClickListener(new OnDateClickListener() {
@@ -109,7 +113,25 @@ public class BienvenidaFragment extends Fragment implements Response.Listener<JS
                 for (int i=0;i<packeventos.size();i++) {
                     String currentFecha = String.valueOf(date.getYear()) + "-" + date.getMonthString() + "-" + date.getDayString();
                     if (packeventos.get(i).getFecha().equals(currentFecha)){
-                        Toast.makeText(getActivity().getApplicationContext(), "Eventos : "+currentFecha+ "\n"
+                        AlertDialog.Builder dialogo=new AlertDialog.Builder(getContext());
+                        dialogo.setTitle("Eventos del: "+currentFecha);
+                        dialogo.setMessage("Ubicacion: "+packeventos.get(i).getUbicacion()+"\n"
+                                +"Titulo: "+packeventos.get(i).getTitulo()+"\n"
+                                +"Hora Inicio: "+packeventos.get(i).getInicio()+"\n"
+                                +"Hora Fin: "+packeventos.get(i).getFin()+"\n"
+                                +"Nota: "+packeventos.get(i).getNota()+"\n"
+                                +"Notificar: "+packeventos.get(i).getNotificar()+"\n");
+
+                        dialogo.setPositiveButton("Aceptar", new DialogInterface.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.cancel();
+                            }
+                        });
+                        dialogo.show();
+
+                        /*Toast.makeText(getActivity().getApplicationContext(), "Eventos : "+currentFecha+ "\n"
                                         +"Ubicacion: "+packeventos.get(i).getUbicacion()+"\n"
                                         +"Ubicacion: "+packeventos.get(i).getUbicacion()+"\n"
                                         +"Titulo: "+packeventos.get(i).getTitulo()+"\n"
@@ -117,7 +139,7 @@ public class BienvenidaFragment extends Fragment implements Response.Listener<JS
                                         +"Hora Fin: "+packeventos.get(i).getFin()+"\n"
                                         +"Nota: "+packeventos.get(i).getNota()+"\n"
                                         +"Notificar: "+packeventos.get(i).getNotificar()+"\n"
-                                , Toast.LENGTH_SHORT).show();
+                                , Toast.LENGTH_SHORT).show();*/
                     }
                 }
 

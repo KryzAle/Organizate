@@ -1,15 +1,19 @@
 package com.kryzcorp.kryzale.organizate.fragments;
 
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -24,19 +28,25 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+
 import com.kryzcorp.kryzale.organizate.R;
+import com.kryzcorp.kryzale.organizate.adapter.EventosFechaAdapter;
 import com.kryzcorp.kryzale.organizate.entidades.Evento;
 import com.kryzcorp.kryzale.organizate.entidades.VolleySingleton;
+
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link ConsultarUsuarioFragment.OnFragmentInteractionListener} interface
+ * {@link ConsutarListaEventosPorFechaFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link ConsultarUsuarioFragment#newInstance} factory method to
+ * Use the {@link ConsutarListaEventosPorFechaFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ConsultarUsuarioFragment extends Fragment implements Response.Listener<JSONObject>,Response.ErrorListener{
+public class ConsutarListaEventosPorFechaFragment extends Fragment
+        implements Response.Listener<JSONObject>,Response.ErrorListener{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -48,16 +58,23 @@ public class ConsultarUsuarioFragment extends Fragment implements Response.Liste
 
     private OnFragmentInteractionListener mListener;
 
-    EditText campoDocumento;
+    RecyclerView recyclerUsuarios;
+    ArrayList<Evento> listaEventos;
+
+    ProgressDialog dialog;
+    EditText campoFecha;
     TextView txtNombre,txtProfesion;
     Button btnConsultarUsuario;
     ProgressDialog progreso;
     ImageView campoImagen;
+    DatePickerDialog dpd;
+    Calendar c;
 
-    //RequestQueue request;
+   // RequestQueue request;
     JsonObjectRequest jsonObjectRequest;
 
-    public ConsultarUsuarioFragment() {
+
+    public ConsutarListaEventosPorFechaFragment() {
         // Required empty public constructor
     }
 
@@ -67,11 +84,11 @@ public class ConsultarUsuarioFragment extends Fragment implements Response.Liste
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment ConsultarUsuarioFragment.
+     * @return A new instance of fragment ConsutarListaEventosPorFechaFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ConsultarUsuarioFragment newInstance(String param1, String param2) {
-        ConsultarUsuarioFragment fragment = new ConsultarUsuarioFragment();
+    public static ConsutarListaEventosPorFechaFragment newInstance(String param1, String param2) {
+        ConsutarListaEventosPorFechaFragment fragment = new ConsutarListaEventosPorFechaFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -91,15 +108,36 @@ public class ConsultarUsuarioFragment extends Fragment implements Response.Liste
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View vista=inflater.inflate(R.layout.fragment_consultar_usuario, container, false);
+        View vista= inflater.inflate(R.layout.fragment_consutar_lista_eventos_fecha, container, false);
+        campoFecha= (EditText) vista.findViewById(R.id.et_fecha);
 
-        campoDocumento= (EditText) vista.findViewById(R.id.campoDocumento);
-        txtNombre= (TextView) vista.findViewById(R.id.txtNombre);
-        txtProfesion= (TextView) vista.findViewById(R.id.txtProfesion);
-        btnConsultarUsuario= (Button) vista.findViewById(R.id.btnConsultarUsuario);
-        campoImagen=(ImageView) vista.findViewById(R.id.imagenId);
 
-       // request= Volley.newRequestQueue(getContext());
+
+        recyclerUsuarios = (RecyclerView) vista.findViewById(R.id.idRecyclerImagen);
+        recyclerUsuarios.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        recyclerUsuarios.setHasFixedSize(true);
+        btnConsultarUsuario= (Button) vista.findViewById(R.id.btn_consultar);
+        campoFecha.setInputType(InputType.TYPE_NULL);
+        campoFecha.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                c= Calendar.getInstance();
+                int day= c.get(Calendar.DAY_OF_MONTH);
+                final int month= c.get(Calendar.MONTH);
+                int year= c.get(Calendar.YEAR);
+                dpd = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                        campoFecha.setText(i+"/"+(i1+1)+"/"+i2);
+
+                    }
+                },day,month,year);
+
+                dpd.show();
+            }
+        });
+
+        // request= Volley.newRequestQueue(getContext());
 
         btnConsultarUsuario.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,65 +145,70 @@ public class ConsultarUsuarioFragment extends Fragment implements Response.Liste
                 cargarWebService();
             }
         });
-
+       // request= Volley.newRequestQueue(getContext());
 
         return vista;
     }
 
     private void cargarWebService() {
 
-        progreso=new ProgressDialog(getContext());
-        progreso.setMessage("Consultando...");
-        progreso.show();
+        dialog=new ProgressDialog(getContext());
+        dialog.setMessage("Consultando Imagenes");
+        dialog.show();
 
         String ip=getString(R.string.ip);
 
-        String url=ip+"/wsJSONConsultarUsuarioImagen.php?documento="
-                +campoDocumento.getText().toString();
-
+        String url=ip+"/wsJSONConsultarEventoFecha.php?id_usuario="+dameUsuario()+"&fecha="+campoFecha.getText().toString();;
         jsonObjectRequest=new JsonObjectRequest(Request.Method.GET,url,null,this,this);
        // request.add(jsonObjectRequest);
         VolleySingleton.getIntanciaVolley(getContext()).addToRequestQueue(jsonObjectRequest);
     }
 
+    @Override
+    public void onResponse(JSONObject response) {
+        Evento evento =null;
+        listaEventos =new ArrayList<>();
+
+
+        JSONArray json=response.optJSONArray("evento");
+
+        try {
+
+            for (int i=0;i<json.length();i++){
+                evento =new Evento();
+                JSONObject jsonObject=null;
+                jsonObject=json.getJSONObject(i);
+
+                evento.setIdEvento(jsonObject.optInt("id_evento"));
+                evento.setUbicacion(jsonObject.optString("ubicacion"));
+                evento.setTitulo(jsonObject.optString("titulo"));
+                evento.setFecha(jsonObject.optString("fecha"));
+                evento.setInicio(jsonObject.optString("inicio"));
+                evento.setFin(jsonObject.optString("fin"));
+                evento.setNota(jsonObject.optString("nota"));
+                evento.setNotificar(jsonObject.optString("notificar"));
+                evento.setIdUser(jsonObject.optInt("id_usuario"));
+                listaEventos.add(evento);
+            }
+            dialog.hide();
+            EventosFechaAdapter adapter=new EventosFechaAdapter(listaEventos);
+            recyclerUsuarios.setAdapter(adapter);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Toast.makeText(getContext(), "No se ha podido establecer conexión con el servidor" +
+                    " "+response, Toast.LENGTH_LONG).show();
+            dialog.hide();
+        }
+    }
 
     @Override
     public void onErrorResponse(VolleyError error) {
-        progreso.hide();
-        Toast.makeText(getContext(),"No se pudo Consultar "+error.toString(),Toast.LENGTH_SHORT).show();
-        Log.i("ERROR",error.toString());
-    }
-
-    @Override
-    public void onResponse(JSONObject response) {
-        progreso.hide();
-
-    //    Toast.makeText(getContext(),"Mensaje: "+response,Toast.LENGTH_SHORT).show();
-
-        Evento miEvento =new Evento();
-
-        JSONArray json=response.optJSONArray("usuario");
-        JSONObject jsonObject=null;
-
-        try {
-            jsonObject=json.getJSONObject(0);
-            miEvento.setUbicacion(jsonObject.optString("ubicacion"));
-            miEvento.setTitulo(jsonObject.optString("titulo"));
-            miEvento.setFecha(jsonObject.optString("fecha"));
-            miEvento.setInicio(jsonObject.optString("inicio"));
-            miEvento.setFin(jsonObject.optString("fin"));
-            miEvento.setNota(jsonObject.optString("nota"));
-            miEvento.setNotificar(jsonObject.optString("notificar"));
-            miEvento.setIdUser(jsonObject.optInt("id"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        txtNombre.setText("Nombre :"+ miEvento.getTitulo());
-        txtProfesion.setText("Profesion :"+ miEvento.getNota());
-
 
     }
+
+
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -205,5 +248,8 @@ public class ConsultarUsuarioFragment extends Fragment implements Response.Liste
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+    public int dameUsuario(){
+        return 1;
     }
 }

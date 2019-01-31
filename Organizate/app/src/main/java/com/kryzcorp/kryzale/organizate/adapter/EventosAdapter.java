@@ -13,11 +13,11 @@ import com.kryzcorp.kryzale.organizate.R;
 import com.kryzcorp.kryzale.organizate.entidades.Evento;
 
 
-public class UsuariosAdapter extends RecyclerView.Adapter<UsuariosAdapter.UsuariosHolder>{
+public class EventosAdapter extends RecyclerView.Adapter<EventosAdapter.UsuariosHolder>{
 
     List<Evento> listaEventos;
 
-    public UsuariosAdapter(List<Evento> listaEventos) {
+    public EventosAdapter(List<Evento> listaEventos) {
         this.listaEventos = listaEventos;
     }
 

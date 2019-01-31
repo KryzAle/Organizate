@@ -61,7 +61,7 @@
         <activity android:name=".registro" />
         <activity
             android:name=".ini"
-            android:label="@string/title_activity_ini"
+            android:label="Organizate"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

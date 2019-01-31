@@ -155,6 +155,7 @@ public class RegistrarEventoFragment extends Fragment {
         campoFec.setInputType(InputType.TYPE_NULL);
         campoIni.setInputType(InputType.TYPE_NULL);
         campoFi.setInputType(InputType.TYPE_NULL);
+        campoNotific.setInputType(InputType.TYPE_NULL);
 
         campoFec.setOnClickListener(new View.OnClickListener() {
             @Override

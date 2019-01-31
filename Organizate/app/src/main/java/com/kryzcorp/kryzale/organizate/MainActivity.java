@@ -14,7 +14,7 @@ import android.view.MenuItem;
 
 import com.kryzcorp.kryzale.organizate.fragments.BienvenidaFragment;
 import com.kryzcorp.kryzale.organizate.fragments.ConsultarListaEventosFragment;
-import com.kryzcorp.kryzale.organizate.fragments.ConsutarListausuarioImagenFragment;
+import com.kryzcorp.kryzale.organizate.fragments.ConsutarListaEventosPorFechaFragment;
 import com.kryzcorp.kryzale.organizate.fragments.MiPerfilFragment;
 import com.kryzcorp.kryzale.organizate.fragments.RegistrarEventoFragment;
 import com.kryzcorp.kryzale.organizate.interfaces.IFragments;
@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity
             miFragment=new ConsultarListaEventosFragment();
             fragmentSeleccionado=true;
         } else if (id == R.id.nav_consulta_gral_img) {
-            miFragment=new ConsutarListausuarioImagenFragment();
+            miFragment=new ConsutarListaEventosPorFechaFragment();
             fragmentSeleccionado=true;
         } else if (id == R.id.nav_mi_perfil) {
             miFragment=new MiPerfilFragment();

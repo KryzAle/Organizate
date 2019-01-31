@@ -22,29 +22,36 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/idDocumento"
-                android:layout_marginTop="10dp"
+                android:id="@+id/idTitulo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Documento"/>
+                android:layout_marginTop="10dp"
+                android:text="Titulo" />
 
             <TextView
-                android:id="@+id/idNombre"
-                android:layout_marginTop="10dp"
+                android:id="@+id/idFecha"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Nombre" />
+                android:layout_marginTop="10dp"
+                android:text="Fecha" />
 
             <TextView
-                android:id="@+id/idProfesion"
+                android:id="@+id/idNota"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Profesion "
                 android:layout_marginBottom="15dp"
+                android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginRight="10dp"/>
+                android:text="Nota" />
 
         </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_eliminar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Eliminar" />
 
     </LinearLayout>
 
