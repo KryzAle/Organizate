@@ -3,49 +3,81 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/fondo2"
     tools:context="com.kryzcorp.kryzale.organizate.fragments.MiPerfilFragment">
 
-    <ImageView
-        android:id="@+id/photoImageView"
-        android:layout_width="72dp"
-        android:layout_height="72dp"
-        android:layout_above="@+id/nameTextView"
-        android:layout_centerHorizontal="true"
-        android:background="@color/colorAccent" />
-
-    <TextView
-        android:id="@+id/nameTextView"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_margin="8dp"
-        android:textSize="20sp"
-        tools:text="Name" />
+        android:orientation="vertical"
+        android:background="#FFF">
 
-    <TextView
-        android:id="@+id/emailTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/nameTextView"
-        android:layout_centerHorizontal="true"
-        android:textSize="16sp"
-        tools:text="ejemplo@ejemplo.com" />
+        <ImageView
+            android:id="@+id/photoImageView"
+            android:layout_width="200dp"
+            android:layout_marginLeft="80dp"
+            android:layout_height="202dp"
+            android:layout_above="@+id/nameTextView"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/redondofoto" />
 
-    <TextView
-        android:id="@+id/idTextView"
-        android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/nameTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_margin="8dp"
+            android:textSize="20sp"
+            tools:text="Name"
+            android:textColor="#7AD1B3"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/emailTextView"
-        android:layout_centerHorizontal="true"
-        tools:text="Id" />
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="208dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/emailTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/nameTextView"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="@font/coming_soon"
+            android:textSize="16sp"
+            tools:text="ejemplo@ejemplo.com"
+            android:textColor="#fff"
+            android:textAlignment="center"
+            />
+
+        <TextView
+            android:id="@+id/idTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/emailTextView"
+            android:layout_centerHorizontal="true"
+            tools:text="Id"
+            android:textColor="#fff"
+            android:textAlignment="center"/>
+    </LinearLayout>
 
     <Button
         android:id="@+id/btn_cerrar_sesion"
         style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:text="@string/logout" />
+        android:text="@string/logout"
+        android:background="@drawable/redondo"
+        android:textStyle="bold"
+        android:textColor="#FFFF"
+        android:fontFamily="@font/coming_soon"/>
 
-</RelativeLayout>
+</>

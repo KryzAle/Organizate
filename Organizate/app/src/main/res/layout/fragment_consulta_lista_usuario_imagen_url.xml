@@ -2,12 +2,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/fondo2"
     tools:context="com.kryzcorp.kryzale.organizate.fragments.ConsultaListaUsuarioImagenUrlFragment">
 
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/idRecyclerImagen"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+
+        />
 
 </FrameLayout>

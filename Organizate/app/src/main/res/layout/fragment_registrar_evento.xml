@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/idLayoutRegistrar"
+    android:background="@drawable/fondo2"
     tools:context="com.kryzcorp.kryzale.organizate.fragments.RegistrarEventoFragment">
 
     <LinearLayout
@@ -19,20 +20,28 @@
             android:gravity="center"
             android:text="Agregar Evento"
             android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            />
 
         <EditText
             android:id="@+id/campoUbicacion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="2"
-            android:hint="Ubicacíon" />
+            android:hint="Ubicacíon"
+            android:backgroundTint="@color/colorAccent"
+
+            android:textColor="@android:color/white"/>
 
         <EditText
             android:id="@+id/campoTitulo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Titulo" />
+            android:hint="Titulo"
+            android:backgroundTint="@color/colorAccent"
+
+            android:textColor="@android:color/white"/>
 
         <EditText
             android:id="@+id/campoFecha"
@@ -40,14 +49,20 @@
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:hint="Fecha"
-            android:inputType="date" />
+            android:inputType="date"
+            android:backgroundTint="@color/colorAccent"
+
+            android:textColor="@android:color/white"/>
 
         <EditText
             android:id="@+id/campoInicio"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Hora Inicio"
-            android:inputType="time" />
+            android:inputType="time"
+            android:backgroundTint="@color/colorAccent"
+
+            android:textColor="@android:color/white"/>
 
         <EditText
             android:id="@+id/campoFin"
@@ -55,14 +70,19 @@
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:hint="Hora Fin"
-            android:inputType="time" />
+            android:inputType="time"
+            android:backgroundTint="@color/colorAccent"
+
+            android:textColor="@android:color/white"/>
 
         <EditText
             android:id="@+id/campoNota"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="2"
-            android:hint="Nota" />
+            android:hint="Nota"
+            android:backgroundTint="@color/colorAccent"
+            />
 
         <EditText
             android:id="@+id/campoNotificar"
@@ -70,7 +90,10 @@
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:hint="Notificar"
-            android:inputType="time" />
+            android:backgroundTint="@color/colorAccent"
+
+            android:inputType="time"
+            android:textColor="@android:color/white"/>
 
 
     </LinearLayout>
@@ -83,7 +106,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:background="@color/colorAccent"
+        android:background="@drawable/redondo"
         android:textColor="@android:color/white" />
 
 

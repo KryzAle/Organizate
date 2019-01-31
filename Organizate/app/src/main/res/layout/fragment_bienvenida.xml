@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/fondo2"
     tools:context="com.kryzcorp.kryzale.organizate.fragments.BienvenidaFragment">
 
     <sun.bob.mcalendarview.MCalendarView
@@ -22,9 +23,12 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="11dp"
-        android:background="@android:color/holo_green_dark"
+        android:textColor="#FFFF"
+        android:textSize="34px"
         android:fontFamily="@font/coming_soon"
-        android:text="Sincronizar Agenda" />
+        android:text="Sincronizar Agenda"
+        android:textStyle="bold"
+        android:background="@drawable/redondo"/>
 
 
 </RelativeLayout>
